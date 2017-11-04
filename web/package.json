@@ -1,0 +1,19 @@
+{
+  "name": "plated-client",
+  "version": "0.0.0",
+  "description": "Client for plated web app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/JacobGo/plated.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JacobGo/plated/issues"
+  },
+  "homepage": "https://github.com/JacobGo/plated#readme"
+}
