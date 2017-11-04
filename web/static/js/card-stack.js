@@ -33,5 +33,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         e.target.classList.add('in-deck');
     });
-    
+
+    $('.stack li').click(function(){
+        $(this).toggleClass('fullscreen')
+    })
 });
+
