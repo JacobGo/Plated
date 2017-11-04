@@ -1,25 +1,32 @@
-from flask import Flask, jsonify
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+ 
+import sys	
+sys.path.append('db')
+from db.init import Base, Restaurant
+ 
+engine = create_engine('sqlite:///plated.db')
+Base.metadata.bind = engine
+ 
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
+ 
+# Insert a Person in the person table
+new_restaurant = Restaurant(name='Antonio\'s')
+session.add(new_restaurant)
+session.commit()
+ 
 
+from flask import Flask, jsonify
 app = Flask(__name__)
 
-tasks = [
-    {
-        'id': 1,
-        'title': u'Buy groceries',
-        'description': u'Milk, Cheese, Pizzal, Fruit, Tylenol',
-        'done': False
-    },
-    {
-        'id': 2,
-        'title': u'Learn Python',
-        'description': u'Need to find a good Python tutorial on the web', 
-        'done': False
-    }
+restaurants = [
+   {'name' : session.query(Restaurant).first().name }
 ]
 
-@app.route('/todo/api/v1.0/tasks', methods=['GET'])
+@app.route('/api/restaurants', methods=['GET'])
 def get_tasks():
-    return jsonify({'tasks': tasks})
+    return jsonify({'restaurants': restaurants})
 
 if __name__ == '__main__':
     app.run(debug=True)
