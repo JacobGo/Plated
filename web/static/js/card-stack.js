@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     $.get('http://localhost:5000/api/restaurants', function(data){
-        data.restaurants.forEach(function (element){
+        console.log(data)
+        data.forEach(function (array){
+            element = array[0]
             $('.stack').append('<li><h1>' + element.name + '</h1></li>')
         })
         var config = 
