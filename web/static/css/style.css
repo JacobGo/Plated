@@ -25,6 +25,10 @@
     max-height: 90%;
     display: block;
 }
+
+.stack li .image{
+    height: 100%;
+}
 #viewport .fullscreen {
     z-index: 9999; 
     width: 100%; 
@@ -52,18 +56,39 @@
 .row-buttons{
     z-index: 1;
     height: 10%;
-    width: 60%; margin: auto; 
-    max-width: 600px;    
+    width: 60%; 
+    margin: auto; 
+    max-width: 600px;  
+    min-width: 400px; 
+    min-height: 86.05px; 
     position: relative;
 }
 .button-holder {
     width: 100%;
     height: 100%;
+    /*display: table;*/
     position: absolute;
     z-index: 2;
     background-color: white;
     border-radius: 0px 0px 10px 10px;
     border-top: 2px solid;
+}
+
+.btn-circle {
+  border-radius: 50%; 
+  text-align: center;
+}
+
+.btn-circle.btn-xl {
+  width: 70px;
+  height: 70px;
+  font-size: 24px;
+  position: relative;
+  margin-top: 4%;
+}
+
+.col_buttons{ 
+    height: 100%;  
 }
 
 .background {
@@ -84,3 +109,27 @@
     height: 3%;
     background-color: #d3d3d3;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
