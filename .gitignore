@@ -1,3 +1,4 @@
 .idea/workspace.xml
-*.xml
 .idea/Plated.iml
+node_modules
+package-lock.json

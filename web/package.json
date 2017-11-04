@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/JacobGo/plated/issues"
   },
-  "homepage": "https://github.com/JacobGo/plated#readme"
+  "homepage": "https://github.com/JacobGo/plated#readme",
+  "dependencies": {
+    "swing": "3.1.1"
+  }
 }
