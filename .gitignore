@@ -2,10 +2,8 @@
 .idea/Plated.iml
 node_modules
 package-lock.json
-<<<<<<< HEAD
 .idea/modules.xml
 .idea/misc.xml
 .idea/vcs.xml
-=======
 __pycache__
->>>>>>> origin/master
+keys.py

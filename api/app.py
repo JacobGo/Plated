@@ -2,6 +2,14 @@ from flask import Flask, jsonify, make_response, abort, request
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Schema
 from flask_cors import CORS
+from pprint import pprint
+
+from yelpapi import YelpAPI
+from keys import Keys
+yelp_api = YelpAPI(Keys()._id, Keys().secret)
+la = 42.39
+lo = -72.52
+# pprint(yelp_api.search_query(longitude=lo,latitude=la))
 
 app = Flask(__name__)
 CORS(app)
