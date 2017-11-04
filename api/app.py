@@ -1,30 +1,10 @@
-# from flask import Flask, jsonify, make_response, abort, request
-# from sqlalchemy import create_engine
-# from sqlalchemy.orm import sessionmaker
-# import sys
-#
-# sys.path.append('db')
-# from db.init import Base, Restaurant
-#
-# engine = create_engine('sqlite:///plated.db')
-# Base.metadata.bind = engine
-#
-# DBSession = sessionmaker(bind=engine)
-# session = DBSession()
-#
-# # Insert a Person in the person table
-# new_restaurant = Restaurant(name='Antonio\'s', popularity=1.0, type='Chinese', recommendation=0.0)
-# session.add(new_restaurant)
-# session.commit()
-#
-# app = Flask(__name__)
-
 from flask import Flask, jsonify, make_response, abort, request
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Schema
-#from sqlalchemy import Column, ForeignKey, Integer, String, Float, PickleType
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./db/plated.db'
 db = SQLAlchemy(app)
 
