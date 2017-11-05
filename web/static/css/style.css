@@ -20,15 +20,14 @@
     font-size: 100px; 
     border: 10px solid #ECECEC; 
     box-sizing: border-box; cursor: default;
-    display: none;
-}
-#viewport .in-deck {
-    display: block;
 }
 #viewport li .image {
     max-width: 100%;
     max-height: 90%;
     display: block;
+}
+.slow-animate {
+    transition: transform 0.4s;
 }
 
 .stack li .image{

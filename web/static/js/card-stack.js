@@ -1,10 +1,13 @@
+var stack
+
 document.addEventListener('DOMContentLoaded', function () {
 
     $.get('http://localhost:5000/api/restaurants', function(data){
         console.log(data)
-        data.forEach(function (array){
+        data.reverse().forEach(function (array){
             element = array[0]
-            $('.stack').append('<li><h1>' + element.name + '</h1></li>')
+            $('.stack').append('<li id="' + element.id + '"><h1>' + element.name + '</h1><h2>'+ element.popularity + '</h2></li>')
+            
         })
         var config = 
         {
@@ -20,19 +23,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 return 2000;
             }
         };
-        var stack = gajus.Swing.Stack(config);
+        stack = gajus.Swing.Stack(config);
     
         [].forEach.call(document.querySelectorAll('.stack li'), function (targetElement) {
             stack.createCard(targetElement);
             targetElement.classList.add('in-deck');
             
             stack.getCard(targetElement).on('throwout', function(e){
-                console.log(e.target.innerText || e.target.textContent, 'has been thrown out of the stack to the', e.throwDirection, 'direction.');
+                swiped( (e.throwDirection == gajus.Swing.Card.DIRECTION_RIGHT) ? 1 : -1, $(targetElement).attr('id'))
                 e.target.classList.remove('in-deck');
             })
             stack.getCard(targetElement).on('throwin', function (e) {
-                console.log(e.target.innerText || e.target.textContent, 'has been thrown into the stack from the', e.throwDirection, 'direction.');
-        
                 e.target.classList.add('in-deck');
             });
         });
@@ -43,12 +44,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     $('.stack li').on('click', function(){
+        console.log("hey")
         if ($(this).hasClass('in-deck')){
-            console.log('fscren')
             $(this).toggleClass('fullscreen')
         }
-    
     })
 
+    $('#reject').on('click', function(){
+        var cards = document.querySelectorAll('.in-deck')
+        var card = stack.getCard(cards[cards.length - 1])
+        $(cards[cards.length - 1]).toggleClass('slow-animate')
+        card.throwOut(gajus.Swing.Card.DIRECTION_LEFT, (Math.random() * 200 - 100))
+    })
+    $('#accept').on('click', function(){
+        var cards = document.querySelectorAll('.in-deck')
+        var card = stack.getCard(cards[cards.length - 1])
+        $(cards[cards.length - 1]).toggleClass('slow-animate')
+        card.throwOut(gajus.Swing.Card.DIRECTION_RIGHT, (Math.random() * 200 - 100))
+    })
 });
+
+function swiped(like, id){
+    $.post( "http://localhost:5000/api/restaurants/like", {'id' : id, 'like' : like })
+}
 
