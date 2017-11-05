@@ -3,13 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Schema
 from flask_cors import CORS
 from pprint import pprint
-
 from yelpapi import YelpAPI
 from keys import Keys
 yelp_api = YelpAPI(Keys()._id, Keys().secret)
-la = 42.39
-lo = -72.52
-# pprint(yelp_api.search_query(longitude=lo,latitude=la))
+
 
 app = Flask(__name__)
 CORS(app)
@@ -39,7 +36,6 @@ def get_restaurants():
 
 @app.route('/api/restaurants/<int:restaurant_id>', methods=['GET'])
 def get_restaurant(restaurant_id):
-    #q = 'SELECT '
     restaurant = Restaurant.query.filter(Restaurant.id == restaurant_id).first()#[r for r in restaurants if restaurants.id == restaurant_id]
     if not (restaurant): #== 0:
         abort(404)
@@ -47,9 +43,9 @@ def get_restaurant(restaurant_id):
 
 def create_restaurant(json_data):
     r = Restaurant(name=json_data['name'],
-                   popularity=json_data['popularity'],
-                   type=json_data['type'],
-                   recommendation=json_data['recommendation'])
+                   popularity = json_data['review_count'],
+                   type=json_data['categories'][0]['title'],
+                   recommendation=None)#json_data['recommendation'])
     db.session.add(r)
     db.session.commit()
     return r
@@ -60,7 +56,9 @@ def add_restaurant():
     restaurant = create_restaurant(request.json)
     return jsonify(restaurant_schema.dump(restaurant)), 201
 
-
+def clear_restaurants():
+    Restaurant.query.delete()
+    db.session.commit()
 # @app.route('/api/restaurants/<int:restaurant_id>', methods=['PUT'])
 # def update_restaurant(restaurant_id):
 #     restaurant = [restaurant for restaurant in restaurants if restaurant['id'] == restaurant_id]
@@ -94,5 +92,30 @@ def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
 
 
+def get_search_parameters(lat, long):
+    # See the Yelp API for more details
+    params = {}
+    #params["term"] = "restaurant"
+    params["ll"] = "{},{}".format(str(lat), str(long))
+    #params["radius_filter"] = "2000"
+    #params["limit"] = "10"
+    return params
+
+#term = ''; location = 'austin, tx'; sort_by = 'rating', limit = 5
+def get_results():
+    # Obtain these from Yelp's manage access page
+    la = 42.39
+    lo = -72.52
+    data = yelp_api.search_query(longitude=lo,latitude=la, sort_by = 'rating', limit = 10, term = 'restaurant')
+    add_to_db(data)
+    return data
+
+def add_to_db(results):
+    for business in results["businesses"]:
+        create_restaurant(business)
+#clear_restaurants()
+#get_results()
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()#debug=True)
+
