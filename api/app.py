@@ -9,7 +9,7 @@ from keys import Keys
 yelp_api = YelpAPI(Keys()._id, Keys().secret)
 la = 42.39
 lo = -72.52
-# pprint(yelp_api.search_query(longitude=lo,latitude=la))
+#print(yelp_api.search_query(longitude=lo,latitude=la))
 
 app = Flask(__name__)
 CORS(app)
