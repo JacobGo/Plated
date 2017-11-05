@@ -142,3 +142,10 @@ body {
     overflow: hidden;
 }
 
+.yelp_dont_sue_us_pls{
+    position: fixed;
+    z-index: 19999999;
+    top: 88%;
+    left: 0;
+    width: 10%;
+}

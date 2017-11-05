@@ -18,19 +18,22 @@ db = SQLAlchemy(app)
 
 class Restaurant(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(250), nullable=True)
-    type = db.Column(db.String(250), nullable=True) #Chinese, cafe, fast food...
-    popularity = db.Column(db.Float, nullable=True)
+    name = db.Column(db.String(250))
+    type = db.Column(db.String(250)) #Chinese, cafe, fast food...
+    popularity = db.Column(db.Float)
     recommendation = db.Column(db.Float, nullable=True) #dict {user_id : float}
+    price = db.Column(db.String(5))
+    phone = db.Column(db.String(250))
+    image_url = db.Column(db.String(250))
+    address = db.Column(db.String(250))
+    url = db.Column(db.String(250))
+    distance = db.Column(db.Float)
+
+
 class RestaurantSchema(Schema):
     class Meta:
-        fields = ['id','name','type','popularity', 'recommendation']
+        fields = ['id','name','type','popularity', 'recommendation', 'price', 'phone', 'image_url', 'address', 'url', 'distance']
 restaurant_schema = RestaurantSchema()
-
-# new_restaurant = Restaurant(name='Not Antonio\'s', popularity=-1.0, type='Chinese', recommendation=0.0)
-# db.session.add(new_restaurant)
-# db.session.commit()
-
 
 @app.route('/api/restaurants', methods=['GET'])
 def get_restaurants():
@@ -46,6 +49,7 @@ def get_restaurant(restaurant_id):
 
 @app.route('/api/restaurants/like', methods=['POST'])
 def like_restaurant():
+    print(request.form)
     if not request.form:
         abort(400)
     restaurant_id = request.form['id']
@@ -67,7 +71,13 @@ def create_restaurant(json_data):
     r = Restaurant(name=json_data['name'],
                    popularity = json_data['review_count'],
                    type=json_data['categories'][0]['title'],
-                   recommendation=None)#json_data['recommendation'])
+                   recommendation=None,
+                   price=json_data['price'],
+                   phone=json_data['display_phone'],
+                   image_url=json_data['image_url'],
+                   url=json_data['url'],
+                   address= ' '.join(json_data['location']['display_address']),
+                   distance=json_data['distance'])
     db.session.add(r)
     db.session.commit()
     return r
@@ -101,16 +111,17 @@ def get_results():
     # Obtain these from Yelp's manage access page
     la = 42.39
     lo = -72.52
-    data = yelp_api.search_query(longitude=lo,latitude=la, sort_by = 'review_count', limit = 10, term = 'restaurant')
+    data = yelp_api.search_query(longitude=lo,latitude=la, sort_by = 'review_count', limit = 20, term = 'restaurant')
     add_to_db(data)
     return data
 
 def add_to_db(results):
     for business in results["businesses"]:
         create_restaurant(business)
-#clear_restaurants()
-#get_results()
+
+clear_restaurants()
+get_results()
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
 

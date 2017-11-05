@@ -6,7 +6,29 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log(data)
         data.forEach(function (array){
             element = array[0]
-            $('.stack').append('<li id="' + element.id + '"><h1>' + element.name + '</h1><h2>'+ element.popularity + '</h2></li>')
+            var html = `
+                <li id="`+ element.id + `">
+                <div id="basic-info">
+                    <img src="` + element.image_url +`" id="image1">
+                    <h2 id="name">` + element.name + `</h2>
+                    <h4 id="price">Price: ` + element.price +`</h4>
+                    <h4 id="rate">Popularity: ` + element.popularity + ` </h4>
+                    <h4 id="distance">` + (element.distance * 0.000621371).toPrecision(3) +` mi away</h4>
+                </div>
+                <div id="desc">
+                <img src="` + element.image_url +`" id="image1">
+                    <p id="name2">Name of the Resterarunt</p>
+                    <p id="price2">Price: ` + element.price +`</p>
+                    <p id="rate2">Popularity: ` + element.popularity +`</p>
+                    <p id="distance2">0.9 mi away</p>
+                    <p id="description_id2">Description:</p>
+                    <p id="description2">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+                    </p>
+                </div>
+            </li>
+            `
+            $('.stack').append(html)
             
         })
         var config = 
