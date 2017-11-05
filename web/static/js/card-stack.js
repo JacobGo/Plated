@@ -37,18 +37,50 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     })
+
+    $('.stack li').click(function(){
+            console.log('clicked')
+            var x = document.getElementById('desc')
+            var y = document.getElementById('basic-info')
+            // var x = $("#desc")[0]
+            // var y = $("#basic-info")[0]
+                if (x.style.display === "none")
+                 {
+                    y.style.display = "none";
+                    x.style.display = "block"; 
+                } 
+                else {
+                    x.style.display = "none";
+                    y.style.display = "block";
+                }   
+        })   
+
+   // $('.stack li').on('click', function(){
+   //      if ($(this).hasClass('in-deck')){
+   //          $("#basic-info").hide();
+   //          $("#desc").show();
+   //      }
     
+   //  })
 
-  
-
-
-    $('.stack li').on('click', function(){
-        if ($(this).hasClass('in-deck')){
-            console.log('fscren')
-            $(this).toggleClass('fullscreen')
-        }
-    
-    })
 
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
