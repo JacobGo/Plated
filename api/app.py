@@ -45,6 +45,25 @@ def get_restaurant(restaurant_id):
         abort(404)
     return jsonify(restaurant_schema.dump(restaurant))
 
+@app.route('/api/restaurants/like', methods=['POST'])
+def like_restaurant():
+    if not request.form:
+        abort(400)
+    restaurant_id = request.form['id']
+    liked = request.form['like']
+    # if not restaurant_id or not liked:
+    #     abort(400)
+    # if liked < -1 or liked > 1:
+    #     abort(400)
+    restaurant = Restaurant.query.filter(Restaurant.id == restaurant_id).first()
+    # if not restaurant:
+    #     abort(400)
+        
+    restaurant.popularity += int(liked);
+    db.session.commit()
+
+    return jsonify(restaurant_schema.dump(restaurant)), 201
+
 def create_restaurant(json_data):
     r = Restaurant(name=json_data['name'],
                    popularity=json_data['popularity'],
