@@ -31,7 +31,7 @@ restaurant_schema = RestaurantSchema()
 
 @app.route('/api/restaurants', methods=['GET'])
 def get_restaurants():
-    return jsonify([restaurant_schema.dump(restaurant) for restaurant in Restaurant.query.all()])
+    return jsonify([restaurant_schema.dump(restaurant) for restaurant in Restaurant.query.order_by(Restaurant.popularity).all()])
 
 
 @app.route('/api/restaurants/<int:restaurant_id>', methods=['GET'])
@@ -78,33 +78,6 @@ def add_restaurant():
 def clear_restaurants():
     Restaurant.query.delete()
     db.session.commit()
-# @app.route('/api/restaurants/<int:restaurant_id>', methods=['PUT'])
-# def update_restaurant(restaurant_id):
-#     restaurant = [restaurant for restaurant in restaurants if restaurant['id'] == restaurant_id]
-#     if len(restaurant) == 0:
-#         abort(404)
-#     if not request.json:
-#         abort(400)
-#     """if 'title' in request.json and type(request.json['title']) != unicode:
-#         abort(400)
-#     if 'description' in request.json and type(request.json['description']) is not unicode:
-#         abort(400)
-#     if 'done' in request.json and type(request.json['done']) is not bool:
-#         abort(400)"""
-#     restaurant[0]['title'] = request.json.get('title', restaurant[0]['title'])
-#     restaurant[0]['description'] = request.json.get('description', restaurant[0]['description'])
-#     restaurant[0]['done'] = request.json.get('done', restaurant[0]['done'])
-#     return jsonify({'restaurant': restaurant[0]})
-#
-#
-# @app.route('/api/restaurants<int:restaurant_id>', methods=['DELETE'])
-# def delete_restaurant(restaurant_id):
-#     restaurant = [restaurant for restaurant in restaurants if restaurant['id'] == restaurant_id]
-#     if len(restaurant) == 0:
-#         abort(404)
-#     restaurants.remove(restaurant[0])
-#     return jsonify({'result': True})
-
 
 @app.errorhandler(404)
 def not_found(error):
@@ -125,7 +98,7 @@ def get_results():
     # Obtain these from Yelp's manage access page
     la = 42.39
     lo = -72.52
-    data = yelp_api.search_query(longitude=lo,latitude=la, sort_by = 'rating', limit = 10, term = 'restaurant')
+    data = yelp_api.search_query(longitude=lo,latitude=la, sort_by = 'review_count', limit = 10, term = 'restaurant')
     add_to_db(data)
     return data
 
@@ -136,5 +109,5 @@ def add_to_db(results):
 #get_results()
 
 if __name__ == '__main__':
-    app.run()#debug=True)
+    app.run(debug=True)
 

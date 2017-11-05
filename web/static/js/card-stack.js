@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     $.get('http://localhost:5000/api/restaurants', function(data){
         console.log(data)
-        data.reverse().forEach(function (array){
+        data.forEach(function (array){
             element = array[0]
             $('.stack').append('<li id="' + element.id + '"><h1>' + element.name + '</h1><h2>'+ element.popularity + '</h2></li>')
             
